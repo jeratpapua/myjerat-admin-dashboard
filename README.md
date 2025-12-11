@@ -2,12 +2,6 @@
 
 A modern, open-source admin dashboard template built with Astro, TailwindCSS, and Alpine.js. Inspired by Flowbite Admin Dashboard, designed with a clean and minimal approach.
 
-## About JERAT Papua
-
-JERAT Papua (Jaringan Kerja Rakyat Papua) is a non-governmental organization founded in 2008, based in Jayapura City, Papua, Indonesia. The organization focuses on advocacy for indigenous knowledge and public policy that supports ecological justice and recognition of collective rights of Papuan indigenous peoples.
-
-Learn more at [jeratpapua.org](https://jeratpapua.org)
-
 ## Tech Stack
 
 - [Astro](https://astro.build) - Static site generator
@@ -93,6 +87,12 @@ src/
 └── styles/
     └── global.css
 ```
+
+## About JERAT Papua
+
+JERAT Papua (Jaringan Kerja Rakyat Papua) is a non-governmental organization founded in 2008, based in Jayapura City, Papua, Indonesia. The organization focuses on advocacy for indigenous knowledge and public policy that supports ecological justice and recognition of collective rights of Papuan indigenous peoples.
+
+Learn more at [jeratpapua.org](https://jeratpapua.org)
 
 ## License
 
