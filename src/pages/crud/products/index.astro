@@ -1,0 +1,338 @@
+---
+// src/pages/crud/products.astro
+import MainLayout from "@/layouts/MainLayout.astro";
+import {
+  Search,
+  Plus,
+  Eye,
+  Pencil,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+} from "@lucide/astro";
+
+// Mock data - replace with actual data from your database
+const products = [
+  {
+    id: 1,
+    name: 'Apple MacBook Pro 17"',
+    category: "Electronics",
+    price: 2999,
+    stock: 24,
+    status: "In Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=MB",
+  },
+  {
+    id: 2,
+    name: "Microsoft Surface Pro",
+    category: "Electronics",
+    price: 1999,
+    stock: 12,
+    status: "In Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=SP",
+  },
+  {
+    id: 3,
+    name: "Magic Mouse 2",
+    category: "Accessories",
+    price: 99,
+    stock: 0,
+    status: "Out of Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=MM",
+  },
+  {
+    id: 4,
+    name: 'Dell Monitor 27"',
+    category: "Electronics",
+    price: 499,
+    stock: 56,
+    status: "In Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=DM",
+  },
+  {
+    id: 5,
+    name: "Logitech MX Keys",
+    category: "Accessories",
+    price: 149,
+    stock: 8,
+    status: "Low Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=MK",
+  },
+  {
+    id: 6,
+    name: "Apple iPad Pro 12.9",
+    category: "Electronics",
+    price: 1099,
+    stock: 32,
+    status: "In Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=IP",
+  },
+  {
+    id: 7,
+    name: "Samsung Galaxy Tab S8",
+    category: "Electronics",
+    price: 849,
+    stock: 0,
+    status: "Out of Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=GT",
+  },
+  {
+    id: 8,
+    name: "Sony WH-1000XM5",
+    category: "Audio",
+    price: 399,
+    stock: 45,
+    status: "In Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=SN",
+  },
+  {
+    id: 9,
+    name: "Apple AirPods Pro",
+    category: "Audio",
+    price: 249,
+    stock: 5,
+    status: "Low Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=AP",
+  },
+  {
+    id: 10,
+    name: "Anker USB-C Hub",
+    category: "Accessories",
+    price: 59,
+    stock: 120,
+    status: "In Stock",
+    image: "https://placehold.co/40x40/e5e7eb/6b7280?text=AH",
+  },
+];
+
+const totalProducts = 86;
+const currentPage = 1;
+const perPage = 10;
+const totalPages = Math.ceil(totalProducts / perPage);
+
+function formatPrice(price: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(price);
+}
+---
+
+<MainLayout
+  title="Products - myJERAT Admin"
+  description="Manage products in your application."
+>
+  <div class="space-y-6">
+    <!-- Page Header -->
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Products</h1>
+        <p class="mt-1 text-sm text-gray-600">Manage your product inventory.</p>
+      </div>
+      <a
+        href="/crud/products/create"
+        class="inline-flex items-center gap-2 rounded-lg bg-green-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+      >
+        <Plus class="size-4" />
+        Add Product
+      </a>
+    </div>
+
+    <!-- Table Card -->
+    <div class="rounded-lg border border-gray-200 bg-white">
+      <!-- Table Header -->
+      <div
+        class="flex flex-col gap-4 border-b border-gray-200 p-4 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div class="relative">
+          <div
+            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+          >
+            <Search class="size-4 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search products..."
+            class="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 sm:w-64"
+          />
+        </div>
+        <div class="flex items-center gap-2">
+          <select
+            class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+          >
+            <option value="">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="accessories">Accessories</option>
+            <option value="audio">Audio</option>
+          </select>
+          <select
+            class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+          >
+            <option value="">All Status</option>
+            <option value="in-stock">In Stock</option>
+            <option value="low-stock">Low Stock</option>
+            <option value="out-of-stock">Out of Stock</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead
+            class="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-700"
+          >
+            <tr>
+              <th class="px-6 py-3">
+                <input
+                  type="checkbox"
+                  class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                />
+              </th>
+              <th class="px-6 py-3">Product</th>
+              <th class="px-6 py-3">Category</th>
+              <th class="px-6 py-3">Price</th>
+              <th class="px-6 py-3">Stock</th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {
+              products.map((product) => (
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4">
+                    <input
+                      type="checkbox"
+                      class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    />
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        class="size-10 rounded-lg object-cover"
+                      />
+                      <span class="font-medium text-gray-900">
+                        {product.name}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-gray-500">{product.category}</td>
+                  <td class="px-6 py-4 font-medium text-gray-900">
+                    {formatPrice(product.price)}
+                  </td>
+                  <td class="px-6 py-4 text-gray-500">{product.stock}</td>
+                  <td class="px-6 py-4">
+                    <span
+                      class={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        product.status === "In Stock"
+                          ? "bg-green-100 text-green-700"
+                          : product.status === "Low Stock"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      <span
+                        class={`size-1.5 rounded-full ${
+                          product.status === "In Stock"
+                            ? "bg-green-500"
+                            : product.status === "Low Stock"
+                              ? "bg-yellow-500"
+                              : "bg-red-500"
+                        }`}
+                      />
+                      {product.status}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center justify-end gap-1">
+                      <a
+                        href={`/crud/products/${product.id}`}
+                        class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                        title="View"
+                      >
+                        <Eye class="size-4" />
+                      </a>
+                      <a
+                        href={`/crud/products/${product.id}/edit`}
+                        class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                        title="Edit"
+                      >
+                        <Pencil class="size-4" />
+                      </a>
+                      <button
+                        type="button"
+                        class="rounded-lg p-2 text-gray-500 hover:bg-red-100 hover:text-red-600"
+                        title="Delete"
+                      >
+                        <Trash2 class="size-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div
+        class="flex flex-col items-center justify-between gap-4 border-t border-gray-200 px-6 py-4 sm:flex-row"
+      >
+        <p class="text-sm text-gray-600">
+          Showing <span class="font-medium">1</span> to <span
+            class="font-medium">10</span
+          > of{" "}
+          <span class="font-medium">{totalProducts}</span> products
+        </p>
+        <div class="flex items-center gap-1">
+          <button
+            type="button"
+            disabled
+            class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <ChevronLeft class="size-4" />
+            Previous
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-green-700 bg-green-700 px-3.5 py-2 text-sm font-medium text-white"
+          >
+            1
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            2
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            3
+          </button>
+          <span class="px-2 text-gray-500">...</span>
+          <button
+            type="button"
+            class="rounded-lg border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            {totalPages}
+          </button>
+          <button
+            type="button"
+            class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Next
+            <ChevronRight class="size-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>

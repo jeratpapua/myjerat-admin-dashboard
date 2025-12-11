@@ -1,0 +1,327 @@
+---
+// src/pages/crud/users.astro
+import MainLayout from "@/layouts/MainLayout.astro";
+import {
+  Search,
+  Plus,
+  Eye,
+  Pencil,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+} from "@lucide/astro";
+
+// Mock data - replace with actual data from your database
+const users = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    role: "Admin",
+    status: "Active",
+    createdAt: "2025-01-15",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    email: "jane@example.com",
+    role: "Editor",
+    status: "Active",
+    createdAt: "2025-02-20",
+  },
+  {
+    id: 3,
+    name: "Bob Johnson",
+    email: "bob@example.com",
+    role: "User",
+    status: "Inactive",
+    createdAt: "2025-03-10",
+  },
+  {
+    id: 4,
+    name: "Alice Brown",
+    email: "alice@example.com",
+    role: "Editor",
+    status: "Active",
+    createdAt: "2025-03-25",
+  },
+  {
+    id: 5,
+    name: "Charlie Wilson",
+    email: "charlie@example.com",
+    role: "User",
+    status: "Active",
+    createdAt: "2025-04-05",
+  },
+  {
+    id: 6,
+    name: "Diana Prince",
+    email: "diana@example.com",
+    role: "Admin",
+    status: "Active",
+    createdAt: "2025-04-12",
+  },
+  {
+    id: 7,
+    name: "Edward Norton",
+    email: "edward@example.com",
+    role: "User",
+    status: "Inactive",
+    createdAt: "2025-05-01",
+  },
+  {
+    id: 8,
+    name: "Fiona Apple",
+    email: "fiona@example.com",
+    role: "Editor",
+    status: "Active",
+    createdAt: "2025-05-18",
+  },
+  {
+    id: 9,
+    name: "George Lucas",
+    email: "george@example.com",
+    role: "User",
+    status: "Active",
+    createdAt: "2025-06-02",
+  },
+  {
+    id: 10,
+    name: "Hannah Montana",
+    email: "hannah@example.com",
+    role: "User",
+    status: "Inactive",
+    createdAt: "2025-06-10",
+  },
+];
+
+const totalUsers = 54;
+const currentPage = 1;
+const perPage = 10;
+const totalPages = Math.ceil(totalUsers / perPage);
+---
+
+<MainLayout
+  title="Users - myJERAT Admin"
+  description="Manage users in your application."
+>
+  <div class="space-y-6">
+    <!-- Page Header -->
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Users</h1>
+        <p class="mt-1 text-sm text-gray-600">
+          Manage and view all registered users.
+        </p>
+      </div>
+      <a
+        href="/crud/users/create"
+        class="inline-flex items-center gap-2 rounded-lg bg-green-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+      >
+        <Plus class="size-4" />
+        Add User
+      </a>
+    </div>
+
+    <!-- Table Card -->
+    <div class="rounded-lg border border-gray-200 bg-white">
+      <!-- Table Header -->
+      <div
+        class="flex flex-col gap-4 border-b border-gray-200 p-4 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div class="relative">
+          <div
+            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+          >
+            <Search class="size-4 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search users..."
+            class="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 sm:w-64"
+          />
+        </div>
+        <div class="flex items-center gap-2">
+          <select
+            class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+          >
+            <option value="">All Roles</option>
+            <option value="admin">Admin</option>
+            <option value="editor">Editor</option>
+            <option value="user">User</option>
+          </select>
+          <select
+            class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead
+            class="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-700"
+          >
+            <tr>
+              <th class="px-6 py-3">
+                <input
+                  type="checkbox"
+                  class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                />
+              </th>
+              <th class="px-6 py-3">Name</th>
+              <th class="px-6 py-3">Role</th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3">Created</th>
+              <th class="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {
+              users.map((user) => (
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4">
+                    <input
+                      type="checkbox"
+                      class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    />
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <img
+                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=32&background=e5e7eb`}
+                        alt={user.name}
+                        class="size-8 rounded-full"
+                      />
+                      <div>
+                        <p class="font-medium text-gray-900">{user.name}</p>
+                        <p class="text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span
+                      class={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        user.role === "Admin"
+                          ? "bg-purple-100 text-purple-700"
+                          : user.role === "Editor"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {user.role}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span
+                      class={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        user.status === "Active"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      <span
+                        class={`size-1.5 rounded-full ${
+                          user.status === "Active"
+                            ? "bg-green-500"
+                            : "bg-gray-400"
+                        }`}
+                      />
+                      {user.status}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-gray-500">{user.createdAt}</td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center justify-end gap-1">
+                      <a
+                        href={`/crud/users/${user.id}`}
+                        class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                        title="View"
+                      >
+                        <Eye class="size-4" />
+                      </a>
+                      <a
+                        href={`/crud/users/${user.id}/edit`}
+                        class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                        title="Edit"
+                      >
+                        <Pencil class="size-4" />
+                      </a>
+                      <button
+                        type="button"
+                        class="rounded-lg p-2 text-gray-500 hover:bg-red-100 hover:text-red-600"
+                        title="Delete"
+                      >
+                        <Trash2 class="size-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div
+        class="flex flex-col items-center justify-between gap-4 border-t border-gray-200 px-6 py-4 sm:flex-row"
+      >
+        <p class="text-sm text-gray-600">
+          Showing <span class="font-medium">1</span> to <span
+            class="font-medium">10</span
+          > of{" "}
+          <span class="font-medium">{totalUsers}</span> users
+        </p>
+        <div class="flex items-center gap-1">
+          <button
+            type="button"
+            disabled
+            class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <ChevronLeft class="size-4" />
+            Previous
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-green-700 bg-green-700 px-3.5 py-2 text-sm font-medium text-white"
+          >
+            1
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            2
+          </button>
+          <button
+            type="button"
+            class="rounded-lg border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            3
+          </button>
+          <span class="px-2 text-gray-500">...</span>
+          <button
+            type="button"
+            class="rounded-lg border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            {totalPages}
+          </button>
+          <button
+            type="button"
+            class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Next
+            <ChevronRight class="size-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
