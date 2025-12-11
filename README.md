@@ -17,7 +17,6 @@ A modern, open-source admin dashboard template built with Astro, TailwindCSS, an
 - Authentication pages (Login, Register, Forgot Password, Reset Password)
 - Profile and Settings pages
 - Error pages (404, 500)
-- Table page
 - Dark overlay for mobile sidebar
 - Breadcrumb navigation
 
