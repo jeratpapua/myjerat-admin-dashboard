@@ -1,0 +1,152 @@
+---
+const currentPath = Astro.url.pathname;
+
+function normalizePath(path: string): string {
+  if (path === "/") return "/";
+  return path.endsWith("/") ? path : path + "/";
+}
+
+// Mapping label sesuai struktur menu sidebar
+const pathLabels: Record<string, string> = {
+  "/": "Dashboard",
+  "/crud/": "CRUD",
+  "/crud/users/": "Users",
+  "/crud/products/": "Products",
+  "/pages/": "Pages",
+  "/pages/profile/": "Profile",
+  "/pages/settings/": "Settings",
+  "/pages/404/": "404 Error",
+  "/pages/500/": "500 Error",
+  "/auth/": "Authentication",
+  "/auth/login/": "Login",
+  "/auth/register/": "Register",
+  "/auth/forgot-password/": "Forgot Password",
+  "/auth/reset-password/": "Reset Password",
+};
+
+const segmentLabels: Record<string, string> = {
+  create: "Create",
+  edit: "Edit",
+  view: "View",
+  delete: "Delete",
+};
+
+function formatSegment(segment: string): string | null {
+  if (segmentLabels[segment]) return segmentLabels[segment];
+  if (/^\d+$/.test(segment) || /^[0-9a-f-]{36}$/i.test(segment)) {
+    return null;
+  }
+  return segment
+    .replace(/[-_]/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function generateBreadcrumbs(pathname: string) {
+  const normalizedPath = normalizePath(pathname);
+  if (normalizedPath === "/") return [];
+
+  const segments = normalizedPath
+    .split("/")
+    .filter((segment) => segment.length > 0);
+
+  const rawCrumbs = [];
+
+  for (let index = 0; index < segments.length; index++) {
+    let path = "/" + segments.slice(0, index + 1).join("/") + "/";
+    path = normalizePath(path);
+
+    const segment = segments[index];
+    const isMainPath = index === 0;
+
+    let label: string | null = pathLabels[path] ?? formatSegment(segment);
+    if (!label) continue;
+
+    rawCrumbs.push({
+      path,
+      label,
+      isMainPath,
+    });
+  }
+
+  return rawCrumbs.map((crumb, i, arr) => ({
+    ...crumb,
+    isLast: i === arr.length - 1,
+  }));
+}
+
+const breadcrumbs = generateBreadcrumbs(currentPath);
+---
+
+{
+  currentPath !== "/" && (
+    <nav
+      class="inline-block text-sm font-medium text-gray-600"
+      aria-label="breadcrumb"
+    >
+      <ol class="flex flex-wrap items-center gap-1">
+        <li class="flex items-center gap-1">
+          <a href="/" class="hover:underline hover:text-gray-900">
+            Dashboard
+          </a>
+          {breadcrumbs.length > 0 && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              fill="none"
+              stroke-width="2"
+              class="size-4"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          )}
+        </li>
+
+        {breadcrumbs.map((crumb) => (
+          <li class="flex items-center gap-1">
+            {crumb.isLast ? (
+              <span class="font-bold text-gray-900" aria-current="page">
+                {crumb.label}
+              </span>
+            ) : (
+              <>
+                <a
+                  href={crumb.isMainPath ? crumb.path : "#"}
+                  class={
+                    crumb.isMainPath
+                      ? "hover:underline hover:text-gray-900"
+                      : "cursor-default"
+                  }
+                >
+                  {crumb.label}
+                </a>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-width="2"
+                  class="size-4"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

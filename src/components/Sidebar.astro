@@ -1,0 +1,299 @@
+---
+import {
+  LayoutDashboard,
+  Database,
+  Users,
+  Package,
+  FileText,
+  User,
+  Settings,
+  AlertTriangle,
+  ServerCrash,
+  Lock,
+  LogIn,
+  UserPlus,
+  KeyRound,
+  RefreshCw,
+  Github,
+  ChevronDown,
+} from "@lucide/astro";
+
+const currentPath = Astro.url.pathname;
+
+const isActive = (path: string) => {
+  const normalizedCurrent =
+    currentPath === "/" ? "/" : currentPath.replace(/\/$/, "");
+  const normalizedPath = path === "/" ? "/" : path.replace(/\/$/, "");
+
+  if (normalizedPath === "/") {
+    return normalizedCurrent === "/";
+  }
+
+  return normalizedCurrent.startsWith(normalizedPath);
+};
+
+const isParentActive = (paths: string[]) => {
+  return paths.some((path) => isActive(path));
+};
+---
+
+<nav
+  x-cloak
+  x-data="{
+    crudOpen: false,
+    pagesOpen: false,
+    authOpen: false
+  }"
+  x-init={() => {
+    crudOpen = isParentActive(["/crud/users", "/crud/products"]);
+    pagesOpen = isParentActive([
+      "/pages/profile",
+      "/pages/settings",
+      "/pages/404",
+      "/pages/500",
+    ]);
+    authOpen = isParentActive([
+      "/auth/login",
+      "/auth/register",
+      "/auth/forgot-password",
+      "/auth/reset-password",
+    ]);
+  }}
+  class="fixed left-0 z-30 flex min-h-screen w-60 shrink-0 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-300 md:w-64 md:translate-x-0 md:sticky md:top-0"
+  x-bind:class="sidebarIsOpen ? 'translate-x-0' : '-translate-x-60'"
+  aria-label="sidebar navigation"
+>
+  <!-- Logo -->
+  <a
+    href="/"
+    class="inline-flex items-center gap-x-2 ml-2 w-fit text-2xl font-bold text-gray-900"
+  >
+    <img
+      src="/images/logo-jeratpapua.png"
+      alt="Logo JERAT Papua"
+      class="w-12 object-contain"
+    />
+    <span class="text-2xl font-bold text-green-700">myJERAT</span>
+  </a>
+
+  <!-- Sidebar Links -->
+  <div class="flex flex-1 flex-col gap-1 overflow-y-auto py-6">
+    <!-- Dashboard -->
+    <a
+      href="/"
+      class={`flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm ${
+        isActive("/")
+          ? "bg-gray-100 text-gray-900 font-medium"
+          : "text-gray-800 hover:bg-gray-100"
+      }`}
+    >
+      <LayoutDashboard class="size-4 shrink-0" />
+      Dashboard
+    </a>
+
+    <!-- CRUD -->
+    <div>
+      <button
+        type="button"
+        class={`flex w-full items-center justify-between gap-x-3.5 rounded-lg px-2.5 py-2 text-sm ${
+          isParentActive(["/crud/users", "/crud/products"])
+            ? "bg-gray-100 text-gray-900 font-medium"
+            : "text-gray-800 hover:bg-gray-100"
+        }`}
+        @click="crudOpen = !crudOpen"
+      >
+        <span class="flex items-center gap-x-3.5">
+          <Database class="size-4 shrink-0" />
+          CRUD
+        </span>
+        <ChevronDown
+          class="size-4 shrink-0 transition-transform duration-200"
+          x-bind:class="crudOpen ? 'rotate-180' : ''"
+        />
+      </button>
+      <div x-show="crudOpen" x-collapse class="mt-1 flex flex-col gap-1 pl-7">
+        <a
+          href="/crud/users"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/crud/users")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <Users class="size-4 shrink-0" />
+          Users
+        </a>
+        <a
+          href="/crud/products"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/crud/products")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <Package class="size-4 shrink-0" />
+          Products
+        </a>
+      </div>
+    </div>
+
+    <!-- Pages -->
+    <div>
+      <button
+        type="button"
+        class={`flex w-full items-center justify-between gap-x-3.5 rounded-lg px-2.5 py-2 text-sm ${
+          isParentActive([
+            "/pages/profile",
+            "/pages/settings",
+            "/pages/404",
+            "/pages/500",
+          ])
+            ? "bg-gray-100 text-gray-900 font-medium"
+            : "text-gray-800 hover:bg-gray-100"
+        }`}
+        @click="pagesOpen = !pagesOpen"
+      >
+        <span class="flex items-center gap-x-3.5">
+          <FileText class="size-4 shrink-0" />
+          Pages
+        </span>
+        <ChevronDown
+          class="size-4 shrink-0 transition-transform duration-200"
+          x-bind:class="pagesOpen ? 'rotate-180' : ''"
+        />
+      </button>
+      <div x-show="pagesOpen" x-collapse class="mt-1 flex flex-col gap-1 pl-7">
+        <a
+          href="/pages/profile"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/pages/profile")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <User class="size-4 shrink-0" />
+          Profile
+        </a>
+        <a
+          href="/pages/settings"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/pages/settings")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <Settings class="size-4 shrink-0" />
+          Settings
+        </a>
+        <a
+          href="/pages/404"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/pages/404")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <AlertTriangle class="size-4 shrink-0" />
+          404 Error
+        </a>
+        <a
+          href="/pages/500"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/pages/500")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <ServerCrash class="size-4 shrink-0" />
+          500 Error
+        </a>
+      </div>
+    </div>
+
+    <!-- Authentication -->
+    <div>
+      <button
+        type="button"
+        class={`flex w-full items-center justify-between gap-x-3.5 rounded-lg px-2.5 py-2 text-sm ${
+          isParentActive([
+            "/auth/login",
+            "/auth/register",
+            "/auth/forgot-password",
+            "/auth/reset-password",
+          ])
+            ? "bg-gray-100 text-gray-900 font-medium"
+            : "text-gray-800 hover:bg-gray-100"
+        }`}
+        @click="authOpen = !authOpen"
+      >
+        <span class="flex items-center gap-x-3.5">
+          <Lock class="size-4 shrink-0" />
+          Authentication
+        </span>
+        <ChevronDown
+          class="size-4 shrink-0 transition-transform duration-200"
+          x-bind:class="authOpen ? 'rotate-180' : ''"
+        />
+      </button>
+      <div x-show="authOpen" x-collapse class="mt-1 flex flex-col gap-1 pl-7">
+        <a
+          href="/auth/login"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/auth/login")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <LogIn class="size-4 shrink-0" />
+          Login
+        </a>
+        <a
+          href="/auth/register"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/auth/register")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <UserPlus class="size-4 shrink-0" />
+          Register
+        </a>
+        <a
+          href="/auth/forgot-password"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/auth/forgot-password")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <KeyRound class="size-4 shrink-0" />
+          Forgot Password
+        </a>
+        <a
+          href="/auth/reset-password"
+          class={`flex items-center gap-x-3 rounded-lg px-2.5 py-2 text-sm ${
+            isActive("/auth/reset-password")
+              ? "bg-gray-100 text-gray-900 font-medium"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          }`}
+        >
+          <RefreshCw class="size-4 shrink-0" />
+          Reset Password
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- GitHub Repository -->
+  <div class="border-t border-gray-200 pt-4">
+    <a
+      href="https://github.com/jeratpapua/myjerat-admin-dashboard"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm text-gray-800 hover:bg-gray-100"
+    >
+      <Github class="size-4 shrink-0" />
+      GitHub Repository
+    </a>
+  </div>
+</nav>

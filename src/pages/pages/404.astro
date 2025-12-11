@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Home, ArrowLeft } from "@lucide/astro";
+---
+
+<BaseLayout
+  title="404 - Page Not Found"
+  description="The page you are looking for does not exist."
+>
+  <div
+    class="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4"
+  >
+    <div class="text-center">
+      <h1 class="text-9xl font-bold text-green-700">404</h1>
+      <div class="mt-4">
+        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+          Page Not Found
+        </h2>
+        <p class="mt-2 text-gray-600">
+          Sorry, the page you are looking for doesn't exist or has been moved.
+        </p>
+      </div>
+      <div
+        class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+      >
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 rounded-lg bg-green-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+        >
+          <Home class="size-4" />
+          Back to Dashboard
+        </a>
+        <button
+          type="button"
+          onclick="history.back()"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+        >
+          <ArrowLeft class="size-4" />
+          Go Back
+        </button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

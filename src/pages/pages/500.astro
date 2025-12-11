@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Home, RefreshCw } from "@lucide/astro";
+---
+
+<BaseLayout
+  title="500 - Server Error"
+  description="An internal server error has occurred."
+>
+  <div
+    class="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4"
+  >
+    <div class="text-center">
+      <h1 class="text-9xl font-bold text-red-600">500</h1>
+      <div class="mt-4">
+        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+          Internal Server Error
+        </h2>
+        <p class="mt-2 text-gray-600">
+          Oops! Something went wrong on our end. Please try again later.
+        </p>
+      </div>
+      <div
+        class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+      >
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 rounded-lg bg-green-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+        >
+          <Home class="size-4" />
+          Back to Dashboard
+        </a>
+        <button
+          type="button"
+          onclick="location.reload()"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+        >
+          <RefreshCw class="size-4" />
+          Try Again
+        </button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

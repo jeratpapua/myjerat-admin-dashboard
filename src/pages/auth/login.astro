@@ -1,0 +1,119 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Mail, Lock, LogIn } from "@lucide/astro";
+---
+
+<BaseLayout title="Login" description="Sign in to your myJERAT admin account.">
+  <div
+    class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12"
+  >
+    <div class="w-full max-w-md">
+      <div class="text-center">
+        <a
+          href="/"
+          class="mb-8 flex flex-col items-center justify-center space-x-2 gap-y-2"
+        >
+          <!-- Logo -->
+          <div class="inline-flex items-center justify-center rounded-2xl">
+            <img
+              src="/images/logo-jeratpapua.png"
+              alt="Logo JERAT Papua"
+              class="w-24 object-contain"
+            />
+          </div>
+          <h1 class="text-3xl font-bold text-green-700">myJERAT</h1>
+        </a>
+
+        <h1 class="mt-6 text-2xl font-bold text-gray-900">
+          Sign in to your account
+        </h1>
+        <p class="mt-2 text-sm text-gray-600">
+          Enter your credentials to access the dashboard
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form class="mt-8 space-y-5" action="/api/auth/login" method="POST">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">
+            Email address
+          </label>
+          <div class="relative mt-1">
+            <div
+              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+            >
+              <Mail class="size-5 text-gray-400" />
+            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="name@company.com"
+              class="block w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">
+            Password
+          </label>
+          <div class="relative mt-1">
+            <div
+              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+            >
+              <Lock class="size-5 text-gray-400" />
+            </div>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder="••••••••"
+              class="block w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="remember"
+              name="remember"
+              class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+            />
+            <label for="remember" class="ml-2 text-sm text-gray-600">
+              Remember me
+            </label>
+          </div>
+          <a
+            href="/auth/forgot-password"
+            class="text-sm font-medium text-green-700 hover:underline"
+          >
+            Forgot password?
+          </a>
+        </div>
+
+        <button
+          type="submit"
+          class="flex w-full items-center justify-center gap-2 rounded-lg bg-green-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+        >
+          <LogIn class="size-4" />
+          Sign in
+        </button>
+
+        <p class="text-center text-sm text-gray-600">
+          Don't have an account?
+          <a
+            href="/auth/register"
+            class="font-medium text-green-700 hover:underline"
+          >
+            Create account
+          </a>
+        </p>
+      </form>
+    </div>
+  </div>
+</BaseLayout>

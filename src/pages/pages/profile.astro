@@ -1,0 +1,202 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Building,
+  Shield,
+  Edit,
+} from "@lucide/astro";
+
+// Mock data - replace with actual user data
+const user = {
+  name: "John Doe",
+  email: "johndoe@jeratpapua.org",
+  phone: "+62 812 3456 7890",
+  location: "Jayapura, Papua",
+  department: "Engineering",
+  role: "Administrator",
+  joinedAt: "January 15, 2024",
+  bio: "Full-stack developer with 5+ years of experience in building web applications. Passionate about creating intuitive user experiences and writing clean, maintainable code.",
+  avatar:
+    "https://ui-avatars.com/api/?name=John+Doe&size=128&background=15803d&color=fff",
+};
+
+const stats = [
+  { label: "Projects", value: "24" },
+  { label: "Tasks Completed", value: "142" },
+  { label: "Team Members", value: "8" },
+];
+
+const activities = [
+  {
+    action: "Updated product",
+    target: 'MacBook Pro 17"',
+    time: "2 hours ago",
+  },
+  {
+    action: "Created new user",
+    target: "jane@example.com",
+    time: "5 hours ago",
+  },
+  {
+    action: "Deleted product",
+    target: "Old Keyboard Model",
+    time: "1 day ago",
+  },
+  {
+    action: "Updated settings",
+    target: "Email notifications",
+    time: "2 days ago",
+  },
+  {
+    action: "Exported data",
+    target: "Users report Q2 2025",
+    time: "3 days ago",
+  },
+];
+---
+
+<MainLayout
+  title="Profile"
+  description="View and manage your profile information."
+>
+  <div class="space-y-6">
+    <!-- Page Header -->
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Profile</h1>
+        <p class="mt-1 text-sm text-gray-600">
+          View and manage your personal information.
+        </p>
+      </div>
+      <a
+        href="/pages/settings"
+        class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200"
+      >
+        <Edit class="size-4" />
+        Edit Profile
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <!-- Profile Card -->
+      <div class="lg:col-span-1">
+        <div class="rounded-lg border border-gray-200 bg-white p-6">
+          <div class="flex flex-col items-center text-center">
+            <img
+              src={user.avatar}
+              alt={user.name}
+              class="size-24 rounded-full object-cover"
+            />
+            <h2 class="mt-4 text-xl font-bold text-gray-900">{user.name}</h2>
+            <span
+              class="mt-1 inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700"
+            >
+              <Shield class="size-3" />
+              {user.role}
+            </span>
+            <p class="mt-4 text-sm text-gray-600">{user.bio}</p>
+          </div>
+
+          <!-- Stats -->
+          <div
+            class="mt-6 grid grid-cols-3 gap-4 border-t border-gray-200 pt-6"
+          >
+            {
+              stats.map((stat) => (
+                <div class="text-center">
+                  <p class="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p class="text-xs text-gray-600">{stat.label}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Details & Activity -->
+      <div class="space-y-6 lg:col-span-2">
+        <!-- Contact Information -->
+        <div class="rounded-lg border border-gray-200 bg-white">
+          <div class="border-b border-gray-200 px-6 py-4">
+            <h3 class="text-lg font-semibold text-gray-900">
+              Contact Information
+            </h3>
+          </div>
+          <div class="p-6">
+            <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div class="flex items-start gap-3">
+                <Mail class="mt-0.5 size-5 text-gray-400" />
+                <div>
+                  <dt class="text-sm font-medium text-gray-500">Email</dt>
+                  <dd class="mt-1 text-sm text-gray-900">{user.email}</dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <Phone class="mt-0.5 size-5 text-gray-400" />
+                <div>
+                  <dt class="text-sm font-medium text-gray-500">Phone</dt>
+                  <dd class="mt-1 text-sm text-gray-900">{user.phone}</dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <MapPin class="mt-0.5 size-5 text-gray-400" />
+                <div>
+                  <dt class="text-sm font-medium text-gray-500">Location</dt>
+                  <dd class="mt-1 text-sm text-gray-900">{user.location}</dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <Building class="mt-0.5 size-5 text-gray-400" />
+                <div>
+                  <dt class="text-sm font-medium text-gray-500">Department</dt>
+                  <dd class="mt-1 text-sm text-gray-900">{user.department}</dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <Calendar class="mt-0.5 size-5 text-gray-400" />
+                <div>
+                  <dt class="text-sm font-medium text-gray-500">Joined</dt>
+                  <dd class="mt-1 text-sm text-gray-900">{user.joinedAt}</dd>
+                </div>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="rounded-lg border border-gray-200 bg-white">
+          <div class="border-b border-gray-200 px-6 py-4">
+            <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+          </div>
+          <div class="p-6">
+            <ul class="space-y-4">
+              {
+                activities.map((activity, index) => (
+                  <li class="flex items-start gap-3">
+                    <div class="mt-1.5 size-2 shrink-0 rounded-full bg-green-500" />
+                    <div class="flex-1">
+                      <p class="text-sm text-gray-900">
+                        <span class="font-medium">{activity.action}</span>
+                        {" — "}
+                        <span class="text-gray-600">{activity.target}</span>
+                      </p>
+                      <p class="mt-0.5 text-xs text-gray-500">
+                        {activity.time}
+                      </p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>

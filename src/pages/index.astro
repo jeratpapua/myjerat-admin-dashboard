@@ -1,40 +1,294 @@
 ---
+// src/pages/index.astro
 import MainLayout from "@/layouts/MainLayout.astro";
+import {
+  Users,
+  Package,
+  TrendingUp,
+  Activity,
+  ArrowUpRight,
+  ArrowDownRight,
+} from "@lucide/astro";
+
+// Mock data - replace with actual data from your database
+const stats = [
+  {
+    title: "Total Users",
+    value: "2,543",
+    change: "+12.5%",
+    trend: "up",
+    icon: Users,
+  },
+  {
+    title: "Total Products",
+    value: "1,234",
+    change: "+8.2%",
+    trend: "up",
+    icon: Package,
+  },
+  {
+    title: "Revenue",
+    value: "$45,231",
+    change: "-3.1%",
+    trend: "down",
+    icon: TrendingUp,
+  },
+  {
+    title: "Active Sessions",
+    value: "573",
+    change: "+24.3%",
+    trend: "up",
+    icon: Activity,
+  },
+];
+
+const recentUsers = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    role: "Admin",
+    status: "Active",
+    createdAt: "2025-06-10",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    email: "jane@example.com",
+    role: "Editor",
+    status: "Active",
+    createdAt: "2025-06-09",
+  },
+  {
+    id: 3,
+    name: "Bob Johnson",
+    email: "bob@example.com",
+    role: "User",
+    status: "Inactive",
+    createdAt: "2025-06-08",
+  },
+  {
+    id: 4,
+    name: "Alice Brown",
+    email: "alice@example.com",
+    role: "Editor",
+    status: "Active",
+    createdAt: "2025-06-07",
+  },
+  {
+    id: 5,
+    name: "Charlie Wilson",
+    email: "charlie@example.com",
+    role: "User",
+    status: "Active",
+    createdAt: "2025-06-06",
+  },
+];
+
+const recentProducts = [
+  {
+    id: 1,
+    name: 'Apple MacBook Pro 17"',
+    category: "Electronics",
+    price: "$2,999",
+    stock: 24,
+    status: "In Stock",
+  },
+  {
+    id: 2,
+    name: "Microsoft Surface Pro",
+    category: "Electronics",
+    price: "$1,999",
+    stock: 12,
+    status: "In Stock",
+  },
+  {
+    id: 3,
+    name: "Magic Mouse 2",
+    category: "Accessories",
+    price: "$99",
+    stock: 0,
+    status: "Out of Stock",
+  },
+  {
+    id: 4,
+    name: 'Dell Monitor 27"',
+    category: "Electronics",
+    price: "$499",
+    stock: 56,
+    status: "In Stock",
+  },
+  {
+    id: 5,
+    name: "Logitech MX Keys",
+    category: "Accessories",
+    price: "$149",
+    stock: 8,
+    status: "Low Stock",
+  },
+];
 ---
 
 <MainLayout
-  title="Welcome to Astro!"
-  description="Welcome to the Astro documentation."
+  title="Dashboard"
+  description="Admin dashboard for managing users, products, and more."
 >
-  <div class="prose mx-auto py-16">
-    <h1>Welcome to Astro!</h1>
-    <p>
-      You’re all set up and ready to start building your Astro site. Here are a
-      few resources to get you started:
-    </p>
-    <ul>
-      <li>
-        <a
-          href="https://docs.astro.build"
-          target="_blank"
-          rel="noopener noreferrer">Astro Documentation</a
+  <div class="space-y-6">
+    <!-- Page Header -->
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+      <p class="mt-1 text-sm text-gray-600">
+        Welcome back! Here's an overview of your application.
+      </p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {
+        stats.map((stat) => (
+          <div class="rounded-lg border border-gray-200 bg-white p-5">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-600">{stat.title}</p>
+                <p class="mt-1 text-2xl font-bold text-gray-900">
+                  {stat.value}
+                </p>
+              </div>
+              <div class="rounded-lg bg-gray-100 p-3">
+                <stat.icon class="size-6 text-gray-700" />
+              </div>
+            </div>
+            <div class="mt-4 flex items-center gap-1">
+              {stat.trend === "up" ? (
+                <ArrowUpRight class="size-4 text-green-600" />
+              ) : (
+                <ArrowDownRight class="size-4 text-red-600" />
+              )}
+              <span
+                class={`text-sm font-medium ${stat.trend === "up" ? "text-green-600" : "text-red-600"}`}
+              >
+                {stat.change}
+              </span>
+              <span class="text-sm text-gray-600">vs last month</span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Tables Grid -->
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+      <!-- Recent Users -->
+      <div class="rounded-lg border border-gray-200 bg-white">
+        <div
+          class="flex items-center justify-between border-b border-gray-200 px-5 py-4"
         >
-      </li>
-      <li>
-        <a
-          href="https://astro.build/examples"
-          target="_blank"
-          rel="noopener noreferrer">Astro Examples</a
+          <h2 class="text-lg font-semibold text-gray-900">Recent Users</h2>
+          <a
+            href="/crud/users"
+            class="text-sm font-medium text-green-700 hover:underline"
+          >
+            View all
+          </a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead
+              class="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-700"
+            >
+              <tr>
+                <th class="px-5 py-3">Name</th>
+                <th class="px-5 py-3">Role</th>
+                <th class="px-5 py-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              {
+                recentUsers.map((user) => (
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-3">
+                      <div>
+                        <p class="font-medium text-gray-900">{user.name}</p>
+                        <p class="text-gray-500">{user.email}</p>
+                      </div>
+                    </td>
+                    <td class="px-5 py-3 text-gray-600">{user.role}</td>
+                    <td class="px-5 py-3">
+                      <span
+                        class={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${
+                          user.status === "Active"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {user.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Products -->
+      <div class="rounded-lg border border-gray-200 bg-white">
+        <div
+          class="flex items-center justify-between border-b border-gray-200 px-5 py-4"
         >
-      </li>
-      <li>
-        <a
-          href="https://astro.build/chat"
-          target="_blank"
-          rel="noopener noreferrer">Astro Discord Community</a
-        >
-      </li>
-    </ul>
-    <p>Happy building!</p>
+          <h2 class="text-lg font-semibold text-gray-900">Recent Products</h2>
+          <a
+            href="/crud/products"
+            class="text-sm font-medium text-green-700 hover:underline"
+          >
+            View all
+          </a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead
+              class="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-700"
+            >
+              <tr>
+                <th class="px-5 py-3">Product</th>
+                <th class="px-5 py-3">Price</th>
+                <th class="px-5 py-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              {
+                recentProducts.map((product) => (
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-3">
+                      <div>
+                        <p class="font-medium text-gray-900">{product.name}</p>
+                        <p class="text-gray-500">{product.category}</p>
+                      </div>
+                    </td>
+                    <td class="px-5 py-3 font-medium text-gray-900">
+                      {product.price}
+                    </td>
+                    <td class="px-5 py-3">
+                      <span
+                        class={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${
+                          product.status === "In Stock"
+                            ? "bg-green-100 text-green-700"
+                            : product.status === "Low Stock"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {product.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </MainLayout>
