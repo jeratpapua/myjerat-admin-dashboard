@@ -1,46 +1,99 @@
-# Astro Starter Kit: Basics
+# myJERAT Admin Dashboard
 
-```sh
-pnpm create astro@latest -- --template basics
+A modern, open-source admin dashboard template built with Astro, TailwindCSS, and Alpine.js. Inspired by Flowbite Admin Dashboard, designed with a clean and minimal approach.
+
+## About JERAT Papua
+
+JERAT Papua (Jaringan Kerja Rakyat Papua) is a non-governmental organization founded in 2008, based in Jayapura City, Papua, Indonesia. The organization focuses on advocacy for indigenous knowledge and public policy that supports ecological justice and recognition of collective rights of Papuan indigenous peoples.
+
+Learn more at [jeratpapua.org](https://jeratpapua.org)
+
+## Tech Stack
+
+- [Astro](https://astro.build) - Static site generator
+- [TailwindCSS](https://tailwindcss.com) - Utility-first CSS framework
+- [Alpine.js](https://alpinejs.dev) - Lightweight JavaScript framework
+- [Lucide Icons](https://lucide.dev) - Icon library
+
+## Features
+
+- Responsive sidebar navigation with collapsible menus
+- Dashboard with statistics cards and data tables
+- CRUD pages (Users, Products)
+- Authentication pages (Login, Register, Forgot Password, Reset Password)
+- Profile and Settings pages
+- Error pages (404, 500)
+- Table page
+- Dark overlay for mobile sidebar
+- Breadcrumb navigation
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or pnpm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/jeratpapua/myjerat-admin-dashboard.git
+
+# Navigate to the project directory
+cd myjerat-admin-dashboard
+
+# Install dependencies
+pnpm install
+
+# Start the development server
+pnpm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The application will be available at `http://localhost:4321`.
 
-## 🚀 Project Structure
+### Build
 
-Inside of your Astro project, you'll see the following folders and files:
+```bash
+# Build for production
+pnpm run build
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+# Preview the production build
+pnpm run preview
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Project Structure
 
-## 🧞 Commands
+```
+src/
+├── components/
+│   ├── BaseHead.astro
+│   ├── Breadcrumbs.astro
+│   ├── Footer.astro
+│   ├── Navbar.astro
+│   └── Sidebar.astro
+├── layouts/
+│   ├── BaseLayout.astro
+│   └── MainLayout.astro
+├── pages/
+│   ├── auth/
+│   │   ├── forgot-password.astro
+│   │   ├── login.astro
+│   │   ├── register.astro
+│   │   └── reset-password.astro
+│   ├── crud/
+│   │   ├── products.astro
+│   │   └── users.astro
+│   ├── pages/
+│   │   ├── 404.astro
+│   │   ├── 500.astro
+│   │   ├── profile.astro
+│   │   └── settings.astro
+│   ├── index.astro
+└── styles/
+    └── global.css
+```
 
-All commands are run from the root of the project, from a terminal:
+## License
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
