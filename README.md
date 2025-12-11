@@ -76,14 +76,16 @@ src/
 │   │   ├── register.astro
 │   │   └── reset-password.astro
 │   ├── crud/
-│   │   ├── products.astro
-│   │   └── users.astro
+│   │   ├── products/
+│   │   │   └── index.astro
+│   │   └── users/
+│   │       └── index.astro
 │   ├── pages/
 │   │   ├── 404.astro
 │   │   ├── 500.astro
 │   │   ├── profile.astro
 │   │   └── settings.astro
-│   ├── index.astro
+│   └── index.astro
 └── styles/
     └── global.css
 ```
