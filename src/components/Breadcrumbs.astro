@@ -6,6 +6,9 @@ function normalizePath(path: string): string {
   return path.endsWith("/") ? path : path + "/";
 }
 
+// Parent paths that don't have actual pages
+const parentOnlyPaths = ["/crud/", "/pages/", "/auth/"];
+
 // Mapping label sesuai struktur menu sidebar
 const pathLabels: Record<string, string> = {
   "/": "Dashboard",
@@ -15,13 +18,6 @@ const pathLabels: Record<string, string> = {
   "/pages/": "Pages",
   "/pages/profile/": "Profile",
   "/pages/settings/": "Settings",
-  "/pages/404/": "404 Error",
-  "/pages/500/": "500 Error",
-  "/auth/": "Authentication",
-  "/auth/login/": "Login",
-  "/auth/register/": "Register",
-  "/auth/forgot-password/": "Forgot Password",
-  "/auth/reset-password/": "Reset Password",
 };
 
 const segmentLabels: Record<string, string> = {
@@ -58,7 +54,7 @@ function generateBreadcrumbs(pathname: string) {
     path = normalizePath(path);
 
     const segment = segments[index];
-    const isMainPath = index === 0;
+    const isLinkable = !parentOnlyPaths.includes(path);
 
     let label: string | null = pathLabels[path] ?? formatSegment(segment);
     if (!label) continue;
@@ -66,7 +62,7 @@ function generateBreadcrumbs(pathname: string) {
     rawCrumbs.push({
       path,
       label,
-      isMainPath,
+      isLinkable,
     });
   }
 
@@ -87,7 +83,7 @@ const breadcrumbs = generateBreadcrumbs(currentPath);
     >
       <ol class="flex flex-wrap items-center gap-1">
         <li class="flex items-center gap-1">
-          <a href="/" class="hover:underline hover:text-gray-900">
+          <a href="/" class="hover:text-gray-900 hover:underline">
             Dashboard
           </a>
           {breadcrumbs.length > 0 && (
@@ -117,16 +113,16 @@ const breadcrumbs = generateBreadcrumbs(currentPath);
               </span>
             ) : (
               <>
-                <a
-                  href={crumb.isMainPath ? crumb.path : "#"}
-                  class={
-                    crumb.isMainPath
-                      ? "hover:underline hover:text-gray-900"
-                      : "cursor-default"
-                  }
-                >
-                  {crumb.label}
-                </a>
+                {crumb.isLinkable ? (
+                  <a
+                    href={crumb.path}
+                    class="hover:text-gray-900 hover:underline"
+                  >
+                    {crumb.label}
+                  </a>
+                ) : (
+                  <span>{crumb.label}</span>
+                )}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
